@@ -12,14 +12,34 @@ Brave (and Chromium-based browsers) typically restricts custom profile avatars t
 - **macOS Native:** Uses system tools to handle file permissions correctly.
 
 ## Prerequisites
-- macOS
-- Python 3.x
+- macOS, Windows, or Linux
+- Python 3.x (Only if running from source)
 - Brave Browser installed
 
-## Installation
+## Installation & Usage (No Python Required)
+
+If you just want to run the app without installing Python:
+
+1.  Go to the **[Releases](https://github.com/YOUR_USERNAME/custom-brave-profile-icons/releases)** page.
+2.  Download the executable for your system:
+    *   **Windows:** `BraveIconChanger-Windows.exe`
+    *   **macOS:** `BraveIconChanger-macOS`
+    *   **Linux:** `BraveIconChanger-Linux`
+3.  **Windows:** Double-click the `.exe` file to run.
+4.  **macOS/Linux:** You may need to make the file executable first:
+    ```bash
+    chmod +x BraveIconChanger-macOS
+    ./BraveIconChanger-macOS
+    ```
+
+**Note:** On some systems, you may see a security warning because the app is not signed. You can safely ignore this and proceed.
+
+## Installation (Running from Source)
+
+If you are a developer or want to run the Python script directly:
 
 1.  Clone or download this repository.
-2.  Install the required dependency (`Pillow` for image processing):
+2.  Install the required dependencies:
 
     ```bash
     pip install -r requirements.txt
@@ -33,17 +53,17 @@ Brave (and Chromium-based browsers) typically restricts custom profile avatars t
 Run the graphical interface:
 
 ```bash
-python3 brave_custom_icon_gui.py
+python brave_custom_icon_gui.py
 ```
 1. Select your profile from the dropdown.
-2. Click "Select Image" to choose your file.
+2. Click "Browse..." to choose your image file.
 3. Click "Apply Custom Icon".
 
 ### Option 2: Command Line
 Run the terminal script:
 
 ```bash
-python3 brave_custom_icon.py
+python brave_custom_icon.py
 ```
 Follow the on-screen prompts to select a profile and provide the path to your image.
 
