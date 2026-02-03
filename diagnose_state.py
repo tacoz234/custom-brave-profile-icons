@@ -1,7 +1,16 @@
 import json
 import os
+import platform
 
-base_path = os.path.expanduser("~/Library/Application Support/BraveSoftware/Brave-Browser/")
+system = platform.system()
+if system == "Windows":
+    base_path = os.path.join(os.environ.get('LOCALAPPDATA', os.path.expanduser("~\\AppData\\Local")), "BraveSoftware", "Brave-Browser", "User Data")
+elif system == "Darwin":
+    base_path = os.path.expanduser("~/Library/Application Support/BraveSoftware/Brave-Browser/")
+else:
+    # Linux default
+    base_path = os.path.expanduser("~/.config/BraveSoftware/Brave-Browser/")
+
 local_state_path = os.path.join(base_path, "Local State")
 
 print(f"Checking Base Path: {base_path}")

@@ -51,8 +51,13 @@ class BraveIconApp:
     def load_profiles(self):
         try:
             self.profiles = self.manager.load_profiles()
-            # Format: "Name (Profile X)"
-            profile_list = [f"{info['name']} ({key})" for key, info in self.profiles.items()]
+            # Map display string to profile key
+            self.profile_map = {}
+            for key, info in self.profiles.items():
+                display_str = f"{info['name']} ({key})"
+                self.profile_map[display_str] = key
+            
+            profile_list = list(self.profile_map.keys())
             self.profile_combo['values'] = profile_list
             if profile_list:
                 self.profile_combo.current(0)
@@ -75,8 +80,11 @@ class BraveIconApp:
             messagebox.showwarning("Warning", "Please select a profile.")
             return
         
-        # Extract profile key from selection string "Name (Profile X)"
-        profile_key = selection.split("(")[-1].strip(")")
+        # Get profile key from map
+        profile_key = self.profile_map.get(selection)
+        if not profile_key:
+             messagebox.showerror("Error", "Selected profile key not found.")
+             return
         
         if not self.selected_image_path:
             messagebox.showwarning("Warning", "Please select an image.")

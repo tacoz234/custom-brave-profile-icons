@@ -4,11 +4,20 @@ import shutil
 import sys
 import subprocess
 import tempfile
+import platform
 from PIL import Image
 
 class BraveProfileManager:
     def __init__(self):
-        self.base_path = os.path.expanduser("~/Library/Application Support/BraveSoftware/Brave-Browser/")
+        system = platform.system()
+        if system == "Windows":
+            self.base_path = os.path.join(os.environ.get('LOCALAPPDATA', os.path.expanduser("~\\AppData\\Local")), "BraveSoftware", "Brave-Browser", "User Data")
+        elif system == "Darwin":
+            self.base_path = os.path.expanduser("~/Library/Application Support/BraveSoftware/Brave-Browser/")
+        else:
+            # Linux default
+            self.base_path = os.path.expanduser("~/.config/BraveSoftware/Brave-Browser/")
+            
         self.local_state_path = os.path.join(self.base_path, "Local State")
         self.profiles = {}
 
@@ -34,10 +43,10 @@ class BraveProfileManager:
         return self.profiles
 
     def _safe_copy(self, src, dst):
-        """Use subprocess to copy file to bypass potential Python permission issues in some environments."""
+        """Use shutil to copy file to ensure cross-platform compatibility."""
         try:
-            subprocess.check_call(['cp', src, dst])
-        except subprocess.CalledProcessError as e:
+            shutil.copy2(src, dst)
+        except Exception as e:
             raise RuntimeError(f"Failed to copy {src} to {dst}: {e}")
 
     def set_custom_icon(self, profile_dir, image_path):
@@ -104,7 +113,8 @@ class BraveProfileManager:
             # Reset avatar icon to a generic one
             profile_data["avatar_icon"] = "chrome://theme/IDR_PROFILE_AVATAR_56"
         else:
-             raise ValueError("Profile entry missing in Local State.")
+             available_profiles = list(data.get("profile", {}).get("info_cache", {}).keys())
+             raise ValueError(f"Profile '{profile_dir}' not found in Local State. Available: {available_profiles}")
 
         # Write to temp file first
         with tempfile.NamedTemporaryFile(mode='w', suffix=".json", delete=False, encoding='utf-8') as tmp_json:
