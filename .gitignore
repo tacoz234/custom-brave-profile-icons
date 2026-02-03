@@ -12,6 +12,11 @@ venv/
 .vscode/
 .idea/
 
-# Local logs/data (if any)
+# Local logs/data
 *.bak
 *.log
+
+# PyInstaller / Build
+build/
+dist/
+*.spec
