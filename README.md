@@ -1,22 +1,33 @@
 # Brave Custom Profile Icons
 
-A Python tool to set custom profile pictures for Brave Browser profiles on **macOS and Windows**.
+**A powerful, cross-platform tool to force custom profile pictures on Brave Browser without a Google Account.**
 
-Brave (and Chromium-based browsers) typically restricts custom profile avatars to users signed in with a Google Account ("GAIA"). This tool bypasses that limitation by injecting a local "GAIA" configuration, allowing you to use any image you want for any profile.
+## Overview
+
+Brave Browser (and other Chromium-based browsers) restricts users from setting custom local images as profile avatars unless they are signed in to a Google Account. This limitation forces users to choose from a generic set of stock icons.
+
+**Brave Custom Profile Icons** bypasses this restriction by processing your image and injecting a "Fake GAIA" configuration directly into Brave's local data. This tricks the browser into accepting your local image as a legitimate synced account picture.
 
 ## Features
-- **Cross-Platform:** Works on macOS and Windows.
-- **Profile Selection:** Automatically detects your Brave profiles.
-- **Image Processing:** Auto-crops and resizes your image to the standard 256x256 format.
-- **Dual Interface:** Choose between a simple Command Line Interface (CLI) or a Graphical User Interface (GUI).
-- **Safe:** Backs up your configuration files (`Local State.bak`, `Preferences.bak`) before making changes.
 
-## Prerequisites
-- macOS or Windows
-- Python 3.x
-- Brave Browser installed
+- **Cross-Platform:** Native support for **macOS** and **Windows**.
+- **Standalone App:** Available as a standalone `.app` for macOS (no Python required).
+- **Smart Detection:** Automatically finds all your Brave profiles (Default, Profile 1, etc.).
+- **Image Engine:** Auto-crops, centers, and resizes any image to the required 256x256 PNG format.
+- **Safety First:** Automatically backs up configuration files (`Local State.bak`, `Preferences.bak`) before applying patches.
+- **Dual Mode:** Includes both a graphical user interface (GUI) and a command-line tool (CLI).
 
-## Installation
+## Quick Start (macOS App)
+
+If you downloaded the release version:
+
+1.  **Close Brave Browser completely** (Cmd+Q).
+2.  Double-click **"Brave Icon Changer.app"**.
+3.  Select your profile and image, then click **Apply**.
+
+## Developer / Script Usage
+
+If you are running from source:
 
 1.  Clone or download this repository.
 2.  Install the required dependency (`Pillow` for image processing):
