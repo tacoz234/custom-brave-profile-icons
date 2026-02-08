@@ -1,18 +1,18 @@
 # Brave Custom Profile Icons
 
-A Python tool to set custom profile pictures for Brave Browser profiles on macOS.
+A Python tool to set custom profile pictures for Brave Browser profiles on **macOS and Windows**.
 
 Brave (and Chromium-based browsers) typically restricts custom profile avatars to users signed in with a Google Account ("GAIA"). This tool bypasses that limitation by injecting a local "GAIA" configuration, allowing you to use any image you want for any profile.
 
 ## Features
+- **Cross-Platform:** Works on macOS and Windows.
 - **Profile Selection:** Automatically detects your Brave profiles.
 - **Image Processing:** Auto-crops and resizes your image to the standard 256x256 format.
 - **Dual Interface:** Choose between a simple Command Line Interface (CLI) or a Graphical User Interface (GUI).
 - **Safe:** Backs up your configuration files (`Local State.bak`, `Preferences.bak`) before making changes.
-- **macOS Native:** Uses system tools to handle file permissions correctly.
 
 ## Prerequisites
-- macOS
+- macOS or Windows
 - Python 3.x
 - Brave Browser installed
 
@@ -51,10 +51,10 @@ Follow the on-screen prompts to select a profile and provide the path to your im
 
 ### Icon reverts to default on restart
 Chromium browsers have strict validation for profile settings. If your icon disappears:
-1. Ensure Brave was **fully quit** (Cmd+Q) before running the script.
+1. Ensure Brave was **fully quit** (Cmd+Q on Mac, Exit on Windows) before running the script.
 2. Run the script again. We use a "Fake GAIA ID" injection method to trick the browser into loading the local file.
 
-### "Operation not permitted" Error
+### "Operation not permitted" Error (macOS)
 If you see permission errors on macOS:
 - Ensure your Terminal app (or IDE) has **Full Disk Access** or access to the `~/Library/Application Support` directory.
 - The script attempts to use `cp` via subprocess to mitigate this, but strict system settings may still block it.

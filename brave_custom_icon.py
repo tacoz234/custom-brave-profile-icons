@@ -9,15 +9,16 @@ from PIL import Image
 
 class BraveProfileManager:
     def __init__(self):
-        system = platform.system()
-        if system == "Windows":
-            self.base_path = os.path.join(os.environ.get('LOCALAPPDATA', os.path.expanduser("~\\AppData\\Local")), "BraveSoftware", "Brave-Browser", "User Data")
-        elif system == "Darwin":
+        self.os_type = platform.system()
+        if self.os_type == "Darwin":  # macOS
             self.base_path = os.path.expanduser("~/Library/Application Support/BraveSoftware/Brave-Browser/")
+        elif self.os_type == "Windows":
+            self.base_path = os.path.join(os.environ['LOCALAPPDATA'], r"BraveSoftware\Brave-Browser\User Data")
+        elif self.os_type == "Linux":
+             self.base_path = os.path.expanduser("~/.config/BraveSoftware/Brave-Browser/")
         else:
-            # Linux default
-            self.base_path = os.path.expanduser("~/.config/BraveSoftware/Brave-Browser/")
-            
+            raise RuntimeError(f"Unsupported Operating System: {self.os_type}")
+
         self.local_state_path = os.path.join(self.base_path, "Local State")
         self.profiles = {}
 
@@ -43,11 +44,21 @@ class BraveProfileManager:
         return self.profiles
 
     def _safe_copy(self, src, dst):
-        """Use shutil to copy file to ensure cross-platform compatibility."""
-        try:
-            shutil.copy2(src, dst)
-        except Exception as e:
-            raise RuntimeError(f"Failed to copy {src} to {dst}: {e}")
+        """
+        Copy file handling permissions.
+        On macOS, uses subprocess 'cp' to bypass some TCC restrictions.
+        On Windows/Linux, uses standard shutil.copy2.
+        """
+        if self.os_type == "Darwin":
+            try:
+                subprocess.check_call(['cp', src, dst])
+            except subprocess.CalledProcessError as e:
+                raise RuntimeError(f"Failed to copy {src} to {dst}: {e}")
+        else:
+            try:
+                shutil.copy2(src, dst)
+            except Exception as e:
+                raise RuntimeError(f"Failed to copy {src} to {dst}: {e}")
 
     def set_custom_icon(self, profile_dir, image_path):
         if profile_dir not in self.profiles:
